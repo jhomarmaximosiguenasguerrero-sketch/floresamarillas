@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Día de las Flores Amarillas</title>
+<style>
+  /* =========================================================
+     🌼 PARA MODIFICAR EL NOMBRE:
+     Busca la variable NOMBRE más abajo en el <script>,
+     o busca el texto "Sofía" en todo el archivo y reemplázalo.
+  ========================================================= */
+
+  :root{
+    --amarillo: #FFC93C;
+    --amarillo-fuerte: #F9A825;
+    --amarillo-suave: #FFF3C4;
+    --verde: #6B8E23;
+    --texto: #4a3b00;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family: 'Georgia', 'Segoe UI', serif;
+    background: linear-gradient(180deg, #FFFDF5 0%, #FFF3C4 100%);
+    color: var(--texto);
+    overflow-x: hidden;
+  }
+
+  /* ---------- INTRO ---------- */
+  #intro{
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, #FFF7DA 0%, #FFD966 60%, #F9A825 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 1s ease, visibility 1s ease;
+  }
+  #intro.oculto{
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .intro-contenido{
+    text-align: center;
+    animation: aparecer 1.2s ease both;
+  }
+  .intro-flor{
+    font-size: 5rem;
+    display: inline-block;
+    animation: girar 3s linear infinite;
+  }
+  .intro-titulo{
+    font-size: clamp(1.5rem, 5vw, 2.8rem);
+    color: #6B4C00;
+    margin: 0.5rem 0 0.2rem;
+    text-shadow: 0 2px 6px rgba(255,255,255,0.6);
+  }
+  .intro-sub{
+    font-size: 1rem;
+    color: #7a5c00;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  @keyframes girar{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+  }
+  @keyframes aparecer{
+    from{ opacity:0; transform: translateY(20px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* Flores cayendo en la intro */
+  .flor-cayendo{
+    position: fixed;
+    top: -10%;
+    font-size: 1.8rem;
+    animation-name: caer;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    z-index: 999;
+    pointer-events: none;
+    user-select: none;
+  }
+  @keyframes caer{
+    0%{ transform: translateY(0) rotate(0deg); opacity: 0.9; }
+    100%{ transform: translateY(110vh) rotate(360deg); opacity: 0.4; }
+  }
+
+  /* ---------- CONTENIDO PRINCIPAL ---------- */
+  #contenido{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  #contenido.visible{ opacity: 1; }
+
+  .encabezado{
+    margin-bottom: 2rem;
+  }
+  .flores-decorativas{
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  h1{
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    color: var(--amarillo-fuerte);
+    margin: 0.2rem 0;
+    text-shadow: 1px 1px 0 #fff, 2px 2px 6px rgba(249,168,37,0.3);
+  }
+  .nombre-dedicado{
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    color: var(--verde);
+    font-style: italic;
+    margin: 0.3rem 0 1.5rem;
+  }
+
+  .tarjeta{
+    background: #fffdf0;
+    border: 2px solid var(--amarillo);
+    border-radius: 20px;
+    padding: 1.8rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 8px 20px rgba(249, 168, 37, 0.15);
+  }
+  .tarjeta p{
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .galeria{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .flor-item{
+    font-size: 3rem;
+    background: var(--amarillo-suave);
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .flor-item:hover{
+    transform: scale(1.15) rotate(10deg);
+  }
+
+  .mensaje-final{
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    color: var(--verde);
+    font-weight: bold;
+  }
+
+  .boton{
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.8rem 2rem;
+    background: var(--amarillo-fuerte);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(249,168,37,0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .boton:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(249,168,37,0.5);
+  }
+
+  footer{
+    text-align:center;
+    padding: 1.5rem;
+    color: #a8880a;
+    font-size: 0.85rem;
+  }
+
+  /* Tema oscuro (si el visor lo tiene activado) */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --texto: #FFF3C4;
+    }
+    body:not([data-theme="light"]){
+      background: linear-gradient(180deg, #2b2400 0%, #4a3b00 100%);
+    }
+    .tarjeta{
+      background: #3a2f00;
+      color: #FFF3C4;
+    }
+    .flor-item{
+      background: #5a4a00;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================= INTRO ================= -->
+  <div id="intro">
+    <div class="intro-contenido">
+      <div class="intro-flor">🌻</div>
+      <h1 class="intro-titulo">Día de las Flores Amarillas</h1>
+      <p class="intro-sub">Cargando alegría...</p>
+    </div>
+  </div>
+
+  <!-- ================= CONTENIDO PRINCIPAL ================= -->
+  <div id="contenido">
+    <div class="encabezado">
+      <div class="flores-decorativas">🌻 🌻 🌻</div>
+      <h1>¡Feliz Día de las<br>Flores Amarillas!</h1>
+      <p class="nombre-dedicado">Dedicado con cariño a <span id="nombre-persona">Gabriela</span> 💛</p>
+    </div>
+
+    <div class="tarjeta">
+      <p>
+        Hoy es el dia de la flores amarilla y tambien tu cumpleños, lo que indica que tu eres una persona muy especial
+        muchos exitos para ti "Gabriela". 🌞
+      </p>
+    </div>
+
+    <div class="galeria">
+      <div class="flor-item">🌻</div>
+      <div class="flor-item">🌻</div>
+      <div class="flor-item">🌻</div>
+      <div class="flor-item">🌻</div>
+      <div class="flor-item">🌻</div>
+    </div>
+
+    <p class="mensaje-final" id="mensaje-final">
+      Que tu día esté lleno de luz, color y buenas noticias ✨
+    </p>
+
+    <button class="boton" id="btn-sorpresa">🎉 Presiona para una sorpresa</button>
+  </div>
+
+  <footer>
+    🌼 Hecho con cariño para Gabriela la mas hermosa 🌼
+  </footer>
+
+<script>
+  /* =========================================================
+     🌼 PERSONALIZACIÓN RÁPIDA
+     Cambia estas variables para modificar el contenido
+     sin tocar el resto del código.
+  ========================================================= */
+  const NOMBRE = "Gabriela";                 // <-- Cambia el nombre aquí
+  const MENSAJE_SORPRESA = "¡" + NOMBRE + ", que tengas un día tan brillante como un girasol! 🌻💛";
+  const CANTIDAD_FLORES_CAYENDO = 18;     // cuántas flores caen en la intro
+  const DURACION_INTRO_MS = 3200;         // cuánto dura la intro antes de pasar al contenido
+
+  // Aplica el nombre al DOM
+  document.getElementById('nombre-persona').textContent = NOMBRE;
+
+  // Emojis de flores amarillas para la animación de caída
+  const emojisFlores = ['🌻', '🌻', '💛', '🌻'];
+
+  function crearFloresCayendo(){
+    for(let i = 0; i < CANTIDAD_FLORES_CAYENDO; i++){
+      const flor = document.createElement('div');
+      flor.className = 'flor-cayendo';
+      flor.textContent = emojisFlores[Math.floor(Math.random() * emojisFlores.length)];
+      flor.style.left = Math.random() * 100 + 'vw';
+      const duracion = 3 + Math.random() * 4; // entre 3 y 7 segundos
+      const retraso = Math.random() * 3;
+      flor.style.animationDuration = duracion + 's';
+      flor.style.animationDelay = retraso + 's';
+      flor.style.fontSize = (1.2 + Math.random() * 1.5) + 'rem';
+      document.body.appendChild(flor);
+    }
+  }
+
+  crearFloresCayendo();
+
+  // Transición de la intro al contenido principal
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const intro = document.getElementById('intro');
+      const contenido = document.getElementById('contenido');
+      intro.classList.add('oculto');
+      contenido.classList.add('visible');
+    }, DURACION_INTRO_MS);
+  });
+
+  // Permite saltar la intro haciendo click en ella
+  document.getElementById('intro').addEventListener('click', () => {
+    document.getElementById('intro').classList.add('oculto');
+    document.getElementById('contenido').classList.add('visible');
+  });
+
+  // Botón de sorpresa
+  document.getElementById('btn-sorpresa').addEventListener('click', () => {
+    document.getElementById('mensaje-final').textContent = MENSAJE_SORPRESA;
+    // Lanza un pequeño estallido extra de flores al hacer click
+    for(let i = 0; i < 10; i++){
+      const flor = document.createElement('div');
+      flor.className = 'flor-cayendo';
+      flor.textContent = emojisFlores[Math.floor(Math.random() * emojisFlores.length)];
+      flor.style.left = Math.random() * 100 + 'vw';
+      flor.style.animationDuration = (2 + Math.random() * 2) + 's';
+      flor.style.fontSize = '2rem';
+      document.body.appendChild(flor);
+      setTimeout(() => flor.remove(), 5000);
+    }
+  });
+</script>
+
+</body>
+</html>
